@@ -24,4 +24,22 @@ public class MainController {
 //        System.out.println("request.getParameter(\"user_id\") = " + request.getParameter("user_id"));
         return "join";
     }
+
+    @PostMapping("/login_user")
+    public String loginUser(String user_id,String user_pw,Integer user_autologin){
+        Integer userIdx = mainService.login(user_id,user_pw);
+        if(userIdx==null) return "FAIL";
+        mainService.updateUser(userIdx,user_autologin);
+        return userIdx.toString();
+    }
+
+    @PostMapping("/check_auto_login")
+    public String checkAutoLogin(String login_user_idx){
+        Integer chk = mainService.checkAutoLogin(login_user_idx);
+        System.out.println(chk);
+        return chk.toString();
+    }
+
+
+
 }
