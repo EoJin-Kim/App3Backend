@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class MainController {
 
@@ -20,6 +20,7 @@ public class MainController {
         System.out.println("user_id = " + user_id);
         System.out.println("user_pw = " + user_pw);
         System.out.println("user_nick_name = " + user_nick_name);
+        mainService.joinUser(user_id,user_pw,user_nick_name);
 //        System.out.println("request.getParameter(\"user_id\") = " + request.getParameter("user_id"));
         return "join";
     }
