@@ -1,9 +1,6 @@
 package com.example.App3Backend.repository;
 
-import com.example.App3Backend.entity.BoardTable;
-import com.example.App3Backend.entity.QBoardTable;
-import com.example.App3Backend.entity.QUserTable;
-import com.example.App3Backend.entity.UserTable;
+import com.example.App3Backend.entity.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -67,5 +64,29 @@ public class MainCustomRepositoryImpl implements MainCustomRepository {
         List<BoardTable> result = queryFactory.selectFrom(boardTable)
                 .fetch();
         return result;
+    }
+
+    @Override
+    public BoardTable findBoardByIdx(Integer boardIdx) {
+        BoardTable findBoard = queryFactory.selectFrom(boardTable)
+                .where(QBoardTable.boardTable.boardIdx.eq(boardIdx))
+                .fetchOne();
+        return findBoard;
+    }
+
+    @Override
+    public UserTable findUserByIdx(Integer userIdx) {
+        UserTable findUser = queryFactory.selectFrom(QUserTable.userTable)
+                .where(QUserTable.userTable.userIdx.eq(userIdx))
+                .fetchOne();
+
+        return findUser;
+    }
+
+    @Override
+    public ContentTable createContent(BoardTable findBoard, UserTable findUser, String content_subject, String content_text) {
+        ContentTable createContent = ContentTable.createContent(findBoard, findUser, content_subject, content_text);
+        em.persist(createContent);
+        return null;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.App3Backend.repository;
 
 import com.example.App3Backend.entity.BoardTable;
+import com.example.App3Backend.entity.ContentTable;
 import com.example.App3Backend.entity.UserTable;
 
 import java.util.List;
@@ -17,4 +18,10 @@ public interface MainCustomRepository {
     BoardTable createBoard(String 게시판3);
 
     List<BoardTable> getBoardList();
+
+    BoardTable findBoardByIdx(Integer content_board_idx);
+
+    UserTable findUserByIdx(Integer content_writer_idx);
+
+    ContentTable createContent(BoardTable findBoard, UserTable findUser, String content_subject, String content_text);
 }

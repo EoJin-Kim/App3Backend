@@ -51,6 +51,16 @@ public class MainController {
         return new ResponseEntity<List>(boardList, HttpStatus.OK);
     }
 
+    @PostMapping("/add_content")
+    public ResponseEntity<?> addContent(Integer content_board_idx,Integer content_writer_idx,String content_subject,String content_text){
+        mainService.createContent(content_board_idx, content_writer_idx, content_subject, content_text);
+        System.out.println("content_board_idx = " + content_board_idx);
+        System.out.println("content_writer_idx = " + content_writer_idx);
+        System.out.println("content_subject = " + content_subject);
+        System.out.println("content_text = " + content_text);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 
 
 }
