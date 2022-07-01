@@ -1,5 +1,6 @@
 package com.example.App3Backend.util;
 
+import com.example.App3Backend.entity.BoardTable;
 import com.example.App3Backend.repository.MainCustomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -37,6 +38,11 @@ public class InitDB {
         }
 
         private void initBoardTable() {
+            BoardTable board1 = mainCustomRepository.createBoard("게시판1");
+            BoardTable board2 = mainCustomRepository.createBoard("게시판2");
+            BoardTable board3 = mainCustomRepository.createBoard("게시판3");
+            BoardTable board4 = mainCustomRepository.createBoard("게시판4");
+
             System.out.println("DB INIT");
 
         }

@@ -1,12 +1,16 @@
 package com.example.App3Backend.controller;
 
+import com.example.App3Backend.dto.BoardDto;
 import com.example.App3Backend.dto.JoinDto;
 import com.example.App3Backend.service.MainService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,6 +42,13 @@ public class MainController {
         Integer chk = mainService.checkAutoLogin(login_user_idx);
         System.out.println(chk);
         return chk.toString();
+    }
+
+    @GetMapping("/get_board_list")
+    public ResponseEntity<?> getBoardList() {
+        List<BoardDto> boardList = mainService.getBoardList();
+
+        return new ResponseEntity<List>(boardList, HttpStatus.OK);
     }
 
 

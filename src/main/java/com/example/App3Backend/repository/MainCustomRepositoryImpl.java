@@ -1,5 +1,7 @@
 package com.example.App3Backend.repository;
 
+import com.example.App3Backend.entity.BoardTable;
+import com.example.App3Backend.entity.QBoardTable;
 import com.example.App3Backend.entity.QUserTable;
 import com.example.App3Backend.entity.UserTable;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -9,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import java.util.List;
+
+import static com.example.App3Backend.entity.QBoardTable.boardTable;
 import static com.example.App3Backend.entity.QUserTable.userTable;
 
 @Repository
@@ -48,5 +53,19 @@ public class MainCustomRepositoryImpl implements MainCustomRepository {
                 .where(userTable.userIdx.eq(userIdx))
                 .fetchOne();
         return chk;
+    }
+
+    @Override
+    public BoardTable createBoard(String boardName) {
+        BoardTable board = BoardTable.createBoard(boardName);
+        em.persist(board);
+        return board;
+    }
+
+    @Override
+    public List<BoardTable> getBoardList() {
+        List<BoardTable> result = queryFactory.selectFrom(boardTable)
+                .fetch();
+        return result;
     }
 }
