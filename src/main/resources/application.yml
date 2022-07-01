@@ -21,4 +21,8 @@ spring:
         show_sql: true
     defer-datasource-initialization: true
 
+  servlet:
+    multipart:
+      location: C:/recentprograming/Spring/App3Backend/static/upload/
+
 

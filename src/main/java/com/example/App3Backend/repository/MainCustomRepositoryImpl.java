@@ -83,10 +83,5 @@ public class MainCustomRepositoryImpl implements MainCustomRepository {
         return findUser;
     }
 
-    @Override
-    public ContentTable createContent(BoardTable findBoard, UserTable findUser, String content_subject, String content_text) {
-        ContentTable createContent = ContentTable.createContent(findBoard, findUser, content_subject, content_text);
-        em.persist(createContent);
-        return null;
-    }
+
 }

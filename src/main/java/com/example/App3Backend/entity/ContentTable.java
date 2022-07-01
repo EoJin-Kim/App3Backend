@@ -27,13 +27,14 @@ public class ContentTable {
     String contentText;
     String contentImage;
 
-    public static ContentTable createContent(BoardTable board, UserTable user, String content_subject, String content_text) {
+    public static ContentTable createContent(BoardTable board, UserTable user, String contentSubject,  String content_text,String contentImage) {
         ContentTable content = new ContentTable();
         content.setBoardTable(board);
         content.setUserTable(user);
-        content.setContentSubject(content_subject);
+        content.setContentSubject(contentSubject);
         content.setContentText(content_text);
         content.setCotentWriteDate(LocalDateTime.now());
+        content.setContentImage(contentImage);
 
         return content;
     }

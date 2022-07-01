@@ -1,9 +1,11 @@
 package com.example.App3Backend.service;
 
 import com.example.App3Backend.dto.BoardDto;
+import com.example.App3Backend.dto.ContentDto;
 import com.example.App3Backend.entity.BoardTable;
 import com.example.App3Backend.entity.ContentTable;
 import com.example.App3Backend.entity.UserTable;
+import com.example.App3Backend.repository.ContentRepository;
 import com.example.App3Backend.repository.MainCustomRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MainService {
     private final MainCustomRepositoryImpl mainRepositoryImpl;
+    private final ContentRepository contentRepository;
 
     public void joinUser(String user_id, String user_pw, String user_nick_name) {
         UserTable createUser = mainRepositoryImpl.createUser(user_id, user_pw, user_nick_name);
@@ -43,9 +46,18 @@ public class MainService {
         return result;
     }
 
-    public void createContent(Integer content_board_idx, Integer content_writer_idx, String content_subject, String content_text) {
+    public String createContent(Integer content_board_idx, Integer content_writer_idx, String content_subject, String content_text,String content_image) {
         BoardTable findBoard = mainRepositoryImpl.findBoardByIdx(content_board_idx);
         UserTable findUser = mainRepositoryImpl.findUserByIdx(content_writer_idx);
-        ContentTable createContent = mainRepositoryImpl.createContent(findBoard, findUser, content_subject, content_text);
+        ContentTable createContent = ContentTable.createContent(findBoard, findUser, content_subject, content_text,content_image);
+        createContent = contentRepository.save(createContent);
+        return createContent.getContentIdx().toString();
+    }
+
+    public ContentDto getContent(Integer contentIdx) {
+        ContentTable content = contentRepository.findById(contentIdx).get();
+        ContentDto contentDto = ContentDto.create(content);
+        return contentDto;
+
     }
 }

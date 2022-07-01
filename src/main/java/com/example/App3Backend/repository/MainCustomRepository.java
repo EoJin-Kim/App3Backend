@@ -15,7 +15,7 @@ public interface MainCustomRepository {
 
     Integer checkAutoLogin(Integer userIdx);
 
-    BoardTable createBoard(String 게시판3);
+    BoardTable createBoard(String board);
 
     List<BoardTable> getBoardList();
 
@@ -23,5 +23,4 @@ public interface MainCustomRepository {
 
     UserTable findUserByIdx(Integer content_writer_idx);
 
-    ContentTable createContent(BoardTable findBoard, UserTable findUser, String content_subject, String content_text);
 }
