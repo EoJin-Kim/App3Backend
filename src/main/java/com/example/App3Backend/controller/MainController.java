@@ -91,5 +91,11 @@ public class MainController {
     }
 
 
+    @PostMapping("/delete_content")
+    public ResponseEntity<?> deleteContent(Integer content_idx){
+        mainService.deleteContent(content_idx);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 
 }

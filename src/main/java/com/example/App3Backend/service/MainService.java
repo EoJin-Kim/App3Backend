@@ -67,4 +67,8 @@ public class MainService {
         List<ContentSummary> result = boardList.stream().map(ct -> ContentSummary.create(ct)).collect(Collectors.toList());
         return result;
     }
+
+    public void deleteContent(Integer content_idx) {
+        contentRepository.deleteById(content_idx);
+    }
 }
