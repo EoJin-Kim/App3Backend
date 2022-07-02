@@ -2,6 +2,7 @@ package com.example.App3Backend.service;
 
 import com.example.App3Backend.dto.BoardDto;
 import com.example.App3Backend.dto.ContentDto;
+import com.example.App3Backend.dto.ContentSummary;
 import com.example.App3Backend.entity.BoardTable;
 import com.example.App3Backend.entity.ContentTable;
 import com.example.App3Backend.entity.UserTable;
@@ -59,5 +60,11 @@ public class MainService {
         ContentDto contentDto = ContentDto.create(content);
         return contentDto;
 
+    }
+
+    public List<ContentSummary> getContentList(Integer boardIdx) {
+        List<ContentTable> boardList = mainRepositoryImpl.findByBoardIdx(boardIdx);
+        List<ContentSummary> result = boardList.stream().map(ct -> ContentSummary.create(ct)).collect(Collectors.toList());
+        return result;
     }
 }

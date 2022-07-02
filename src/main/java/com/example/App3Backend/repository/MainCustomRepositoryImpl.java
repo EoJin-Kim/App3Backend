@@ -1,6 +1,7 @@
 package com.example.App3Backend.repository;
 
 import com.example.App3Backend.entity.*;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -11,6 +12,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.example.App3Backend.entity.QBoardTable.boardTable;
+import static com.example.App3Backend.entity.QContentTable.contentTable;
 import static com.example.App3Backend.entity.QUserTable.userTable;
 
 @Repository
@@ -84,4 +86,14 @@ public class MainCustomRepositoryImpl implements MainCustomRepository {
     }
 
 
+    @Override
+    public List<ContentTable> findByBoardIdx(Integer boardIdx) {
+        JPAQuery<ContentTable> query = queryFactory.selectFrom(contentTable);
+        if(boardIdx!=0){
+            query.where(contentTable.boardTable.boardIdx.eq(boardIdx));
+        }
+        List<ContentTable> result = query.fetch();
+
+        return result;
+    }
 }

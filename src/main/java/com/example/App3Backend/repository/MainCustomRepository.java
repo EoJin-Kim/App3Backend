@@ -23,4 +23,5 @@ public interface MainCustomRepository {
 
     UserTable findUserByIdx(Integer content_writer_idx);
 
+    List<ContentTable> findByBoardIdx(Integer boardIdx);
 }

@@ -2,6 +2,7 @@ package com.example.App3Backend.controller;
 
 import com.example.App3Backend.dto.BoardDto;
 import com.example.App3Backend.dto.ContentDto;
+import com.example.App3Backend.dto.ContentSummary;
 import com.example.App3Backend.dto.JoinDto;
 import com.example.App3Backend.service.MainService;
 import lombok.RequiredArgsConstructor;
@@ -80,6 +81,13 @@ public class MainController {
     public ResponseEntity<?> getContent(Integer read_content_idx){
         ContentDto contentDto = mainService.getContent(read_content_idx);
         return new ResponseEntity<ContentDto>(contentDto,HttpStatus.OK);
+    }
+
+    @PostMapping("/get_content_list")
+    public ResponseEntity<?> getContentList(Integer content_board_idx){
+        List<ContentSummary> contentList = mainService.getContentList(content_board_idx);
+
+        return new ResponseEntity<List>(contentList,HttpStatus.OK);
     }
 
 
