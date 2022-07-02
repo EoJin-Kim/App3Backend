@@ -17,6 +17,7 @@ public class ContentDto {
     String content_image;
     String content_write_date;
     Integer content_writer_idx;
+    Integer content_board_idx;
 
     public static ContentDto create(ContentTable content) {
         ContentDto contentDto = new ContentDto();
@@ -26,6 +27,7 @@ public class ContentDto {
         contentDto.setContent_image(content.getContentImage());
         contentDto.setContent_write_date(content.getCotentWriteDate().format(DateTimeFormatter.ofPattern("YYYY-MM-dd")));
         contentDto.setContent_writer_idx(content.getUserTable().getUserIdx());
+        contentDto.setContent_board_idx(content.getBoardTable().getBoardIdx());
         return contentDto;
 
     }

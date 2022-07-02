@@ -1,14 +1,19 @@
 package com.example.App3Backend.repository;
 
+import com.example.App3Backend.dto.ModifyContentDto;
 import com.example.App3Backend.entity.*;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import static com.example.App3Backend.entity.QBoardTable.boardTable;
@@ -19,6 +24,9 @@ import static com.example.App3Backend.entity.QUserTable.userTable;
 @RequiredArgsConstructor
 @Transactional
 public class MainCustomRepositoryImpl implements MainCustomRepository {
+    @Value("${spring.servlet.multipart.location}")
+    private String uploadPath;
+
     private final JPAQueryFactory queryFactory;
     private final EntityManager em;
 
@@ -95,5 +103,25 @@ public class MainCustomRepositoryImpl implements MainCustomRepository {
         List<ContentTable> result = query.fetch();
 
         return result;
+    }
+
+    @Override
+    public void modifyContent(ContentTable contentTable, BoardTable boardTable, ModifyContentDto contentDto) throws IOException {
+
+        contentTable.setContentSubject(contentDto.getContent_subject());
+        contentTable.setContentText(contentDto.getContent_text());
+        contentTable.setBoardTable(boardTable);
+        MultipartFile contentImage = contentDto.getContent_image();
+        if(contentImage==null || contentImage.isEmpty()){
+            contentTable.setContentImage(null);
+        }
+        else {
+            String filename = contentDto.getContent_image().getOriginalFilename();
+            String fullPath = uploadPath + filename;
+            System.out.println("fullPath = " + fullPath);
+            contentDto.getContent_image().transferTo(new File(fullPath));
+            contentTable.setContentImage(filename);
+        }
+
     }
 }

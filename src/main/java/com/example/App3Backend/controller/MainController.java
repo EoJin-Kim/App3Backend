@@ -1,9 +1,6 @@
 package com.example.App3Backend.controller;
 
-import com.example.App3Backend.dto.BoardDto;
-import com.example.App3Backend.dto.ContentDto;
-import com.example.App3Backend.dto.ContentSummary;
-import com.example.App3Backend.dto.JoinDto;
+import com.example.App3Backend.dto.*;
 import com.example.App3Backend.service.MainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,11 +35,18 @@ public class MainController {
         return "join";
     }
 
+//    @PostMapping("/login_user")
+//    public String loginUser(String user_id,String user_pw,Integer user_autologin){
+//        Integer userIdx = mainService.login(user_id,user_pw);
+//        if(userIdx==null) return "FAIL";
+//        mainService.updateUser(userIdx,user_autologin);
+//        return userIdx.toString();
+//    }
     @PostMapping("/login_user")
-    public String loginUser(String user_id,String user_pw,Integer user_autologin){
-        Integer userIdx = mainService.login(user_id,user_pw);
+    public String loginUser(LoginDto loginDto){
+        Integer userIdx = mainService.login(loginDto.getUser_id(),loginDto.getUser_pw());
         if(userIdx==null) return "FAIL";
-        mainService.updateUser(userIdx,user_autologin);
+        mainService.updateUser(userIdx,loginDto.getUser_autologin());
         return userIdx.toString();
     }
 
@@ -61,18 +65,20 @@ public class MainController {
     }
 
     @PostMapping("/add_content")
-    public ResponseEntity<?> addContent(Integer content_board_idx, Integer content_writer_idx, String content_subject, String content_text, MultipartFile content_image) throws IOException {
+    public ResponseEntity<?> addContent(CreateContentDto contentDto) throws IOException {
 
         String result = "";
-        if(content_image==null || content_image.isEmpty()){
-            result = mainService.createContent(content_board_idx, content_writer_idx, content_subject, content_text,null);
+        if(contentDto.getContent_image()==null || contentDto.getContent_image().isEmpty()){
+            result = mainService.createContent(
+                    contentDto.getContent_board_idx(), contentDto.getContent_writer_idx(), contentDto.getContent_subject(), contentDto.getContent_text(),null);
         }
         else {
-            String filename = content_image.getOriginalFilename();
-            result = mainService.createContent(content_board_idx, content_writer_idx, content_subject, content_text,filename);
+            String filename = contentDto.getContent_image().getOriginalFilename();
+            result = mainService.createContent(
+                    contentDto.getContent_board_idx(), contentDto.getContent_writer_idx(), contentDto.getContent_subject(), contentDto.getContent_text(),filename);
             String fullPath = uploadPath + filename;
             System.out.println("fullPath = " + fullPath);
-            content_image.transferTo(new File(fullPath));
+            contentDto.getContent_image().transferTo(new File(fullPath));
         }
         return new ResponseEntity<String>(result,HttpStatus.OK);
     }
@@ -94,6 +100,12 @@ public class MainController {
     @PostMapping("/delete_content")
     public ResponseEntity<?> deleteContent(Integer content_idx){
         mainService.deleteContent(content_idx);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("modify_content")
+    public ResponseEntity<?> modifyContent(ModifyContentDto contentDto) throws IOException {
+        mainService.modifyContent(contentDto);
         return new ResponseEntity(HttpStatus.OK);
     }
 

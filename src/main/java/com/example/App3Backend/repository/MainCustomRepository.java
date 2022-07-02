@@ -1,9 +1,11 @@
 package com.example.App3Backend.repository;
 
+import com.example.App3Backend.dto.ModifyContentDto;
 import com.example.App3Backend.entity.BoardTable;
 import com.example.App3Backend.entity.ContentTable;
 import com.example.App3Backend.entity.UserTable;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface MainCustomRepository {
@@ -24,4 +26,7 @@ public interface MainCustomRepository {
     UserTable findUserByIdx(Integer content_writer_idx);
 
     List<ContentTable> findByBoardIdx(Integer boardIdx);
+
+    void modifyContent(ContentTable contentTable, BoardTable boardTable, ModifyContentDto contentDto) throws IOException;
+
 }

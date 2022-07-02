@@ -3,14 +3,17 @@ package com.example.App3Backend.service;
 import com.example.App3Backend.dto.BoardDto;
 import com.example.App3Backend.dto.ContentDto;
 import com.example.App3Backend.dto.ContentSummary;
+import com.example.App3Backend.dto.ModifyContentDto;
 import com.example.App3Backend.entity.BoardTable;
 import com.example.App3Backend.entity.ContentTable;
 import com.example.App3Backend.entity.UserTable;
+import com.example.App3Backend.repository.BoardRepository;
 import com.example.App3Backend.repository.ContentRepository;
 import com.example.App3Backend.repository.MainCustomRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,9 +22,11 @@ import java.util.stream.Collectors;
 public class MainService {
     private final MainCustomRepositoryImpl mainRepositoryImpl;
     private final ContentRepository contentRepository;
+    private final BoardRepository boardRepository;
 
     public void joinUser(String user_id, String user_pw, String user_nick_name) {
         UserTable createUser = mainRepositoryImpl.createUser(user_id, user_pw, user_nick_name);
+
     }
 
     public Integer login(String user_id, String user_pw) {
@@ -70,5 +75,12 @@ public class MainService {
 
     public void deleteContent(Integer content_idx) {
         contentRepository.deleteById(content_idx);
+    }
+
+    public void modifyContent(ModifyContentDto contentDto) throws IOException {
+        ContentTable contentTable = contentRepository.findById(contentDto.getContent_idx()).get();
+        BoardTable boardTable = boardRepository.findById(contentDto.getContent_board_idx()).get();
+        mainRepositoryImpl.modifyContent(contentTable,boardTable,contentDto);
+
     }
 }
