@@ -67,19 +67,25 @@ public class MainController {
     @PostMapping("/add_content")
     public ResponseEntity<?> addContent(CreateContentDto contentDto) throws IOException {
 
+
         String result = "";
-        if(contentDto.getContent_image()==null || contentDto.getContent_image().isEmpty()){
-            result = mainService.createContent(
-                    contentDto.getContent_board_idx(), contentDto.getContent_writer_idx(), contentDto.getContent_subject(), contentDto.getContent_text(),null);
+        String oringStr = contentDto.getContent_subject();
+        for (int i = 0; i < 30; i++) {
+            contentDto.setContent_subject(oringStr+i);
+            if(contentDto.getContent_image()==null || contentDto.getContent_image().isEmpty()){
+                result = mainService.createContent(
+                        contentDto.getContent_board_idx(), contentDto.getContent_writer_idx(), contentDto.getContent_subject(), contentDto.getContent_text(),null);
+            }
+            else {
+                String filename = contentDto.getContent_image().getOriginalFilename();
+                result = mainService.createContent(
+                        contentDto.getContent_board_idx(), contentDto.getContent_writer_idx(), contentDto.getContent_subject(), contentDto.getContent_text(),filename);
+                String fullPath = uploadPath + filename;
+                System.out.println("fullPath = " + fullPath);
+                contentDto.getContent_image().transferTo(new File(fullPath));
+            }
         }
-        else {
-            String filename = contentDto.getContent_image().getOriginalFilename();
-            result = mainService.createContent(
-                    contentDto.getContent_board_idx(), contentDto.getContent_writer_idx(), contentDto.getContent_subject(), contentDto.getContent_text(),filename);
-            String fullPath = uploadPath + filename;
-            System.out.println("fullPath = " + fullPath);
-            contentDto.getContent_image().transferTo(new File(fullPath));
-        }
+
         return new ResponseEntity<String>(result,HttpStatus.OK);
     }
 
@@ -90,8 +96,8 @@ public class MainController {
     }
 
     @PostMapping("/get_content_list")
-    public ResponseEntity<?> getContentList(Integer content_board_idx){
-        List<ContentSummary> contentList = mainService.getContentList(content_board_idx);
+    public ResponseEntity<?> getContentList(Integer content_board_idx,Integer page_num){
+        List<ContentSummary> contentList = mainService.getContentList(content_board_idx,page_num);
 
         return new ResponseEntity<List>(contentList,HttpStatus.OK);
     }

@@ -67,8 +67,9 @@ public class MainService {
 
     }
 
-    public List<ContentSummary> getContentList(Integer boardIdx) {
-        List<ContentTable> boardList = mainRepositoryImpl.findByBoardIdx(boardIdx);
+    public List<ContentSummary> getContentList( Integer boardIdx,Integer page_num) {
+        int startIndex = (page_num -1) * 10;
+        List<ContentTable> boardList = mainRepositoryImpl.findByBoardIdx(boardIdx,startIndex);
         List<ContentSummary> result = boardList.stream().map(ct -> ContentSummary.create(ct)).collect(Collectors.toList());
         return result;
     }

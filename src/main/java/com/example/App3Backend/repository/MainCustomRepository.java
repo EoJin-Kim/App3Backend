@@ -25,7 +25,7 @@ public interface MainCustomRepository {
 
     UserTable findUserByIdx(Integer content_writer_idx);
 
-    List<ContentTable> findByBoardIdx(Integer boardIdx);
+    List<ContentTable> findByBoardIdx(Integer boardIdx,int startOffset);
 
     void modifyContent(ContentTable contentTable, BoardTable boardTable, ModifyContentDto contentDto) throws IOException;
 

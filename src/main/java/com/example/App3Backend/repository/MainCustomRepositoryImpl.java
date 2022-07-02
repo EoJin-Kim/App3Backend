@@ -95,13 +95,15 @@ public class MainCustomRepositoryImpl implements MainCustomRepository {
 
 
     @Override
-    public List<ContentTable> findByBoardIdx(Integer boardIdx) {
+    public List<ContentTable> findByBoardIdx(Integer boardIdx,int startOffset) {
         JPAQuery<ContentTable> query = queryFactory.selectFrom(contentTable);
         if(boardIdx!=0){
             query.where(contentTable.boardTable.boardIdx.eq(boardIdx));
         }
-        List<ContentTable> result = query.fetch();
-
+        List<ContentTable> result = query
+                .offset(startOffset).
+                limit(10)
+                .fetch();
         return result;
     }
 
